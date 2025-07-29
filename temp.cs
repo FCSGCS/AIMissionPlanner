@@ -38,6 +38,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
+using OpenTK;
 using DotSpatial.Data;
 using Microsoft.Scripting.Utils;
 using static MissionPlanner.Utilities.Firmware;
@@ -992,7 +993,8 @@ namespace MissionPlanner
 
         private void but_3dmap_Click(object sender, EventArgs e)
         {
-            var ogl = new OpenGLtest2();
+            var ogl = new Vehicle3DMap();
+            ogl.VehiclePosition = Vector3.Zero;
             var frm = ogl.ShowUserControl();
         }
 

@@ -458,6 +458,9 @@
     <Compile Update="Controls\OpenGLtest2.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Vehicle3DMap.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="GCSViews\ConfigurationView\ConfigSerialInjectGPS.cs">
       <SubType>UserControl</SubType>
     </Compile>
