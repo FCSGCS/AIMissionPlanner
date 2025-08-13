@@ -36,6 +36,13 @@ namespace MissionPlanner.Controls
         bool ctladded = false;
         bool _drawlabel = true;
 
+        private Color _normalColor;
+        private Color _warningColor = Color.Orange;
+        private Color _criticalColor = Color.Red;
+
+        public int WarningThreshold { get; set; } = int.MaxValue;
+        public int CriticalThreshold { get; set; } = int.MaxValue;
+
         [System.ComponentModel.Browsable(true),
 System.ComponentModel.Category("Mine"),
 System.ComponentModel.Description("draw text under Bar")]
@@ -69,6 +76,7 @@ System.ComponentModel.Description("draw text under Bar")]
             drawlbl();
             Maximum = 100;
             Minimum = 0;
+            _normalColor = this.ForeColor;
         }
 
         public new int Value
@@ -80,6 +88,7 @@ System.ComponentModel.Description("draw text under Bar")]
                     return;
 
                 _value = value;
+                UpdateValueColor();
                 int ans = value + offset;
                 if (ans <= base.Minimum)
                 {
@@ -216,8 +225,25 @@ System.ComponentModel.Description("Text under Bar")]
         public int minline { get; set; }
         public int maxline { get; set; }
 
+        private void UpdateValueColor()
+        {
+            if (_value >= CriticalThreshold)
+            {
+                this.ForeColor = _criticalColor;
+            }
+            else if (_value >= WarningThreshold)
+            {
+                this.ForeColor = _warningColor;
+            }
+            else
+            {
+                this.ForeColor = _normalColor;
+            }
+        }
+
         protected new void OnPaint(PaintEventArgs e)
         {
+            UpdateValueColor();
             base.OnPaint(e);
             drawlbl();
         }

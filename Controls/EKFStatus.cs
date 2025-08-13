@@ -32,11 +32,8 @@ namespace MissionPlanner.Controls
 
             foreach (var item in new VerticalProgressBar2[] { ekfvel, ekfposh, ekfposv, ekfcompass, ekfterrain })
             {
-                if (item.Value > 50)
-                    item.ValueColor = Color.Orange;
-
-                if (item.Value > 80)
-                    item.ValueColor = Color.Red;
+                item.WarningThreshold = 50;
+                item.CriticalThreshold = 80;
             }
 
             int idx = 0;

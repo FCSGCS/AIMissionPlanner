@@ -39,6 +39,14 @@ namespace MissionPlanner.Controls
         int displayvalue = 0;
         bool _drawlabel = true;
 
+        private Color _normalValueColor;
+        private Color _warningValueColor = Color.Orange;
+        private Color _criticalValueColor = Color.Red;
+
+        public int WarningThreshold { get; set; } = int.MaxValue;
+        public int CriticalThreshold { get; set; } = int.MaxValue;
+
+
         //BSE.Windows.Forms.ProgressBar basepb = new BSE.Windows.Forms.ProgressBar();
 
         [System.ComponentModel.Browsable(true),
@@ -80,6 +88,8 @@ System.ComponentModel.Description("draw text under Bar")]
     ControlStyles.AllPaintingInWmPaint |
     ControlStyles.SupportsTransparentBackColor |
     ControlStyles.UserPaint, true);
+
+            _normalValueColor = this.ValueColor;
         }
 
         public new int Value
@@ -97,6 +107,8 @@ System.ComponentModel.Description("draw text under Bar")]
                     int dif = _value - Minimum;
                     _value = Maximum - dif;
                 }
+
+                UpdateValueColor();
 
                 int ans = _value + offset;
                 if (ans <= base.Minimum)
@@ -163,6 +175,22 @@ System.ComponentModel.Description("values scaled for display")]
         }
 
         private float _displayscale = 1;
+
+        private void UpdateValueColor()
+        {
+            if (displayvalue >= CriticalThreshold)
+            {
+                this.ValueColor = _criticalValueColor;
+            }
+            else if (displayvalue >= WarningThreshold)
+            {
+                this.ValueColor = _warningValueColor;
+            }
+            else
+            {
+                this.ValueColor = _normalValueColor;
+            }
+        }
 
         StringFormat drawFormat = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
@@ -245,6 +273,7 @@ System.ComponentModel.Description("values scaled for display")]
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            UpdateValueColor();
             base.OnPaint(e);
             drawlbl(e.Graphics);
         }
