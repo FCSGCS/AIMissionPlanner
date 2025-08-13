@@ -730,19 +730,11 @@ def mix2(servo1, servo2, mixtype=1, gain=0.5):
     return v2
 
 def wrap_180(angle):
-    if angle > 180:
-        angle -= 360.0
-    if angle < -180:
-        angle += 360.0
-    return angle
+    return ((angle + 180.0) % 360.0) - 180.0
 
 
 def wrap_360(angle):
-    if angle > 360:
-        angle -= 360.0
-    if angle < 0:
-        angle += 360.0
-    return angle
+    return angle % 360.0
 
 class DCM_State(object):
     '''DCM state object'''
