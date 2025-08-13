@@ -52,6 +52,8 @@ In case you didn't install an IDE, you will need to manually install Git. Please
 
 Open a git bash terminal in the MissionPlanner directory and type, "git submodule update --init" to download all submodules
 
+Run a NuGet restore to download all package dependencies. From a command prompt you can use either `dotnet restore` or `.nuget\nuget.exe restore MissionPlanner.sln`.
+
 #### 3. Build
 
 To build the code:
