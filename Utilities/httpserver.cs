@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MissionPlanner.Utilities
@@ -92,6 +93,39 @@ namespace MissionPlanner.Utilities
                 catch (ThreadAbortException ex)
                 {
                     log.Info(ex);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                }
+            }
+        }
+
+        public async Task listernforclientsAsync(CancellationToken token)
+        {
+            try
+            {
+                listener = new TcpListener(IPAddress.Any, 56781);
+
+                listener.Start();
+            }
+            catch (Exception e)
+            {
+                log.Error("Exception starting listener. Possible multiple instances of planner?", e);
+                return;
+            }
+
+            while (run && !token.IsCancellationRequested)
+            {
+                try
+                {
+                    log.Info("Listening for client");
+                    var client = await listener.AcceptTcpClientAsync();
+                    _ = Task.Run(() => ProcessClient(client), token);
+                }
+                catch (ObjectDisposedException)
+                {
                     return;
                 }
                 catch (Exception ex)
