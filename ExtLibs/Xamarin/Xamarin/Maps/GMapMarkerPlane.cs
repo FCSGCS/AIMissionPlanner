@@ -122,19 +122,25 @@ namespace MissionPlanner.Maps
             }
 
             // 'which' variable simply selects different coloured plane icon/s from the resource library
-            if (which == 0)
+            var draw = which;
+            if (AnimateIcons)
+            {
+                draw = (int)((Environment.TickCount / 200) % 7);
+            }
+
+            if (draw == 0)
                 g.DrawImageUnscaled(icon, icon.Width / -2, icon.Height / -2);
-            if (which == 1)
+            if (draw == 1)
                 g.DrawImageUnscaled(icon1, icon1.Width / -2, icon1.Height / -2);
-            if (which == 2)
+            if (draw == 2)
                 g.DrawImageUnscaled(icon2, icon2.Width / -2, icon2.Height / -2);
-            if (which == 3)
+            if (draw == 3)
                 g.DrawImageUnscaled(icon3, icon3.Width / -2, icon3.Height / -2);
-            if (which == 4)
+            if (draw == 4)
                 g.DrawImageUnscaled(icon4, icon4.Width / -2, icon4.Height / -2);
-            if (which == 5)
+            if (draw == 5)
                 g.DrawImageUnscaled(icon5, icon5.Width / -2, icon5.Height / -2);
-            if (which == 6)
+            if (draw == 6)
                 g.DrawImageUnscaled(icon6, icon6.Width / -2, icon6.Height / -2);
 
 

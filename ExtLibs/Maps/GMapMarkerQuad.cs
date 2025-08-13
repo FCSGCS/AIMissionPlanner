@@ -128,6 +128,15 @@ namespace MissionPlanner.Maps
                 return;
             }
 
+            if (AnimateIcons)
+            {
+                framerotation = (framerotation + 10) % 360;
+            }
+            else
+            {
+                framerotation = 0;
+            }
+
             var temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
             g.TranslateTransform(-Offset.X, -Offset.Y);
