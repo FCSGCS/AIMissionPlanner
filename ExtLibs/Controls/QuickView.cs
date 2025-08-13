@@ -11,12 +11,26 @@ using SkiaSharp.Views.Desktop;
 
 namespace MissionPlanner.Controls
 {
-    public partial class QuickView : SkiaSharp.Views.Desktop.SKControl
+    public partial class QuickView : SkiaSharp.Views.Desktop.SKControl, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         [System.ComponentModel.Browsable(true)]
         public string desc
         {
-            get { return _desc; } set { if (_desc == value) return; _desc = value; Invalidate(); }
+            get { return _desc; }
+            set
+            {
+                if (_desc == value)
+                    return;
+                _desc = value;
+                OnPropertyChanged(nameof(desc));
+                Invalidate();
+            }
         }
 
         double _number = -9999;
@@ -32,6 +46,7 @@ namespace MissionPlanner.Controls
                     if (_number.Equals(value))
                         return;
                     _number = value;
+                    OnPropertyChanged(nameof(number));
                     Invalidate();
                 }
             }
@@ -53,12 +68,24 @@ namespace MissionPlanner.Controls
                 if (_numberformat.Equals(value))
                     return;
                 _numberformat = value;
+                OnPropertyChanged(nameof(numberformat));
                 this.Invalidate();
             }
         }
 
         [System.ComponentModel.Browsable(true)]
-        public Color numberColor { get { return _numbercolor; } set { if (_numbercolor == value) return; _numbercolor = value; Invalidate(); } }
+        public Color numberColor
+        {
+            get { return _numbercolor; }
+            set
+            {
+                if (_numbercolor == value)
+                    return;
+                _numbercolor = value;
+                OnPropertyChanged(nameof(numberColor));
+                Invalidate();
+            }
+        }
 
         //We use this property as a backup store for the numberColor, so it is possible to change numberColor temporary.
         public Color numberColorBackup { get; set; }

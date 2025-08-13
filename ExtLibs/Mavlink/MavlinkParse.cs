@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 public partial class MAVLink
 {
@@ -125,6 +126,52 @@ public partial class MAVLink
             }
         }
 
+        public static async Task ReadWithTimeoutAsync(Stream BaseStream, byte[] buffer, int offset, int count)
+        {
+            int timeout = 500;
+
+            if (BaseStream.CanSeek)
+            {
+                timeout = 0;
+
+                if ((BaseStream.Position + count) > BaseStream.Length)
+                    throw new EndOfStreamException("End of data");
+            }
+
+            if (BaseStream.CanTimeout)
+            {
+                timeout = BaseStream.ReadTimeout;
+
+                if (timeout == -1)
+                    timeout = 60000;
+            }
+
+            DateTime to = DateTime.UtcNow.AddMilliseconds(timeout);
+
+            int toread = count;
+            int pos = offset;
+
+            while (true)
+            {
+                int read = await BaseStream.ReadAsync(buffer, pos, toread);
+
+                toread -= read;
+                pos += read;
+
+                if (read > 0)
+                    to = DateTime.UtcNow.AddMilliseconds(timeout);
+
+                if (toread == 0)
+                    break;
+
+                if (DateTime.UtcNow > to)
+                {
+                    throw new TimeoutException("Timeout waiting for data");
+                }
+                await Task.Delay(1);
+            }
+        }
+
         public MAVLinkMessage ReadPacket(Stream BaseStream)
         {
             byte[] buffer = new byte[MAVLink.MAVLINK_MAX_PACKET_LEN];
@@ -227,6 +274,105 @@ public partial class MAVLink
             {
                 badCRC++;
                 // crc fail
+                return null;
+            }
+
+            return message;
+        }
+
+        public async Task<MAVLinkMessage> ReadPacketAsync(Stream BaseStream)
+        {
+            byte[] buffer = new byte[MAVLink.MAVLINK_MAX_PACKET_LEN];
+
+            DateTime packettime = DateTime.MinValue;
+
+            if (hasTimestamp)
+            {
+                byte[] datearray = new byte[8];
+
+                int tem = await BaseStream.ReadAsync(datearray, 0, datearray.Length);
+
+                Array.Reverse(datearray);
+
+                DateTime date1 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+                UInt64 dateint = BitConverter.ToUInt64(datearray, 0);
+
+                if ((dateint / 1000 / 1000 / 60 / 60) < 9999999)
+                {
+                    date1 = date1.AddMilliseconds(dateint / 1000);
+
+                    packettime = date1.ToLocalTime();
+                }
+            }
+
+            int readcount = 0;
+
+            while (readcount <= MAVLink.MAVLINK_MAX_PACKET_LEN)
+            {
+                await ReadWithTimeoutAsync(BaseStream, buffer, 0, 1);
+
+                if (buffer[0] == MAVLink.MAVLINK_STX || buffer[0] == MAVLINK_STX_MAVLINK1)
+                    break;
+
+                readcount++;
+            }
+
+            if (readcount >= MAVLink.MAVLINK_MAX_PACKET_LEN)
+            {
+                return null;
+            }
+
+            var headerlength = buffer[0] == MAVLINK_STX ? MAVLINK_CORE_HEADER_LEN : MAVLINK_CORE_HEADER_MAVLINK1_LEN;
+            var headerlengthstx = headerlength + 1;
+
+            try
+            {
+                await ReadWithTimeoutAsync(BaseStream, buffer, 1, headerlength);
+            }
+            catch (EndOfStreamException)
+            {
+                return null;
+            }
+
+            int lengthtoread = 0;
+            if (buffer[0] == MAVLINK_STX)
+            {
+                lengthtoread = buffer[1] + headerlengthstx + 2 - 2;
+                if ((buffer[2] & MAVLINK_IFLAG_SIGNED) > 0)
+                {
+                    lengthtoread += MAVLINK_SIGNATURE_BLOCK_LEN;
+                }
+            }
+            else
+            {
+                lengthtoread = buffer[1] + headerlengthstx + 2 - 2;
+            }
+
+            try
+            {
+                await ReadWithTimeoutAsync(BaseStream, buffer, headerlengthstx, lengthtoread - (headerlengthstx - 2));
+            }
+            catch (EndOfStreamException)
+            {
+                return null;
+            }
+
+            Array.Resize<byte>(ref buffer, lengthtoread + 2);
+
+            MAVLinkMessage message = new MAVLinkMessage(buffer, packettime);
+
+            ushort crc = MavlinkCRC.crc_calculate(buffer, buffer.Length - 2);
+
+            if (message.header == MAVLINK_STX || message.header == MAVLINK_STX_MAVLINK1)
+            {
+                crc = MavlinkCRC.crc_accumulate(MAVLINK_MESSAGE_INFOS.GetMessageInfo(message.msgid).crc, crc);
+            }
+
+            if ((message.crc16 >> 8) != (crc >> 8) ||
+                      (message.crc16 & 0xff) != (crc & 0xff))
+            {
+                badCRC++;
                 return null;
             }
 
