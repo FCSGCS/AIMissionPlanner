@@ -125,7 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common">
-      <Version>4.7.2</Version>
+      <Version>9.0.8</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
