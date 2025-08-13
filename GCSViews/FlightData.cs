@@ -6437,6 +6437,12 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        private void animatedIconsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MissionPlanner.Maps.GMapMarkerBase.AnimateIcons = !MissionPlanner.Maps.GMapMarkerBase.AnimateIcons;
+            animatedIconsToolStripMenuItem.Checked = MissionPlanner.Maps.GMapMarkerBase.AnimateIcons;
+        }
+
         private void multiLineToolStripMenuItem_Click(object sender, EventArgs e)
         {
             tabControlactions.Multiline = !tabControlactions.Multiline;

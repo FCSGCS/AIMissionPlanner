@@ -18,6 +18,7 @@ namespace MissionPlanner.Maps
 
         public float warn = -1;
         public float danger = -1;
+        private float framerotation = 0;
 
         public GMapMarkerQuad(PointLatLng p, float heading, float cog, float target, int sysid)
             : base(p)
@@ -31,6 +32,14 @@ namespace MissionPlanner.Maps
 
         public override void OnRender(IGraphics g)
         {
+            if (AnimateIcons)
+            {
+                framerotation = (framerotation + 10) % 360;
+            }
+            else
+            {
+                framerotation = 0;
+            }
             var temp = g.Transform;
             g.TranslateTransform(LocalPosition.X, LocalPosition.Y);
 
@@ -64,7 +73,11 @@ namespace MissionPlanner.Maps
             {
             }
 
+            g.RotateTransform(framerotation);
+
             g.DrawImageUnscaled(icon, icon.Width / -2 + 2, icon.Height / -2);
+
+            g.RotateTransform(-framerotation);
 
             g.DrawString(sysid.ToString(), new Font(FontFamily.GenericMonospace, 15, FontStyle.Bold), Brushes.Red, -8,
                 -8);

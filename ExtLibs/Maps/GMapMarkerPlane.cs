@@ -186,6 +186,12 @@ namespace MissionPlanner.Maps
             if (which % 7 == 6)
                 color = Color.Pink;
 
+            if (AnimateIcons)
+            {
+                int mod = (int)(Math.Abs(Math.Sin(Environment.TickCount / 200.0)) * 60);
+                color = Color.FromArgb(Math.Min(color.R + mod, 255), Math.Min(color.G + mod, 255), Math.Min(color.B + mod, 255));
+            }
+
             if(IsTransparent)
             {
                 color = Color.FromArgb(100, color);

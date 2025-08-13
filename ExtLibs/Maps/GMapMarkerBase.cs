@@ -14,6 +14,7 @@ namespace MissionPlanner.Maps
         public static bool DisplayNavBearingSetting = true;
         public static bool DisplayRadiusSetting = true;
         public static bool DisplayTargetSetting = true;
+        public static bool AnimateIcons = false;
         public static int length = 500;
         public static InactiveDisplayStyleEnum InactiveDisplayStyle = InactiveDisplayStyleEnum.Normal;
         
