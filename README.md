@@ -11,7 +11,12 @@ Download latest stable version : http://firmware.ardupilot.org/Tools/MissionPlan
 Changelog : https://github.com/ArduPilot/MissionPlanner/blob/master/ChangeLog.txt
 
 License : https://github.com/ArduPilot/MissionPlanner/blob/master/COPYING.txt
+### Abbreviations
 
+- **AI** – Artificial Intelligence
+- **ML** – Machine Learning
+- **DL** – Deep Learning
+- **LLM** – Large Language Model
 
 ## How to compile
 
