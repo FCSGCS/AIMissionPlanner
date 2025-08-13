@@ -174,7 +174,7 @@
       <Version>0.9.7</Version>
     </PackageReference>
     <PackageReference Include="BouncyCastle.Cryptography">
-      <Version>2.4.0</Version>
+      <Version>2.6.2</Version>
     </PackageReference>
     <PackageReference Include="Crc32.NET">
       <Version>1.2.0</Version>
@@ -198,7 +198,7 @@
     <PackageReference Include="JetBrains.Profiler.SelfApi">
       <Version>2.0.2</Version>
     </PackageReference>
-    <PackageReference Include="log4net" version="2.0.13" targetFramework="net462" />
+    <PackageReference Include="log4net" version="3.1.0" targetFramework="net462" />
     <PackageReference Include="Meziantou.Analyzer">
       <Version>1.0.663</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -226,31 +226,31 @@
     <PackageReference Include="OpenTK.GLControl">
       <Version>3.1.0</Version>
     </PackageReference>
-    <PackageReference Include="SharpDX" version="4.1.0" targetFramework="net462" />
-    <PackageReference Include="SharpDX.DirectInput" version="4.1.0" targetFramework="net462" />
-    <PackageReference Include="SkiaSharp" Version="2.88.8" />
+    <PackageReference Include="SharpDX" version="4.2.0" targetFramework="net462" />
+    <PackageReference Include="SharpDX.DirectInput" version="4.2.0" targetFramework="net462" />
+    <PackageReference Include="SkiaSharp" Version="2.88.9" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies">
-      <Version>2.80.2</Version>
+      <Version>2.88.9</Version>
     </PackageReference>
-    <PackageReference Include="SkiaSharp.Views" Version="2.80.2" />
-    <PackageReference Include="SSH.NET" version="2020.0.2" targetFramework="net40" />
+    <PackageReference Include="SkiaSharp.Views" Version="2.88.9" />
+    <PackageReference Include="SSH.NET" version="2025.0.0" targetFramework="net40" />
     <PackageReference Include="System.CodeDom">
       <Version>8.0.0</Version>
     </PackageReference>
-    <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.8" />
     <PackageReference Include="System.IO.Ports" Version="4.7.0" />
-    <PackageReference Include="System.Reactive" Version="4.0.0" />
-    <PackageReference Include="System.Reactive.Core" Version="4.0.0" />
-    <PackageReference Include="System.Reactive.Linq" Version="4.0.0" />
+    <PackageReference Include="System.Reactive" Version="6.0.1" />
+    <PackageReference Include="System.Reactive.Core" Version="6.0.1" />
+    <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
     <PackageReference Include="System.ValueTuple">
       <Version>4.5.0</Version>
     </PackageReference>
     <PackageReference Include="Unofficial.ObjectListView" version="2.6.0" targetFramework="net40" />
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.6.1</Version>
+      <Version>1.8.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>5.0.0.2012</Version>
+      <Version>5.0.0.2662</Version>
     </PackageReference>
     <PackageReference Include="zlib.net" version="1.0.4.0" targetFramework="net40" />
     <PackageReference Include="WebSocket4Net" Version="0.15.2" ExcludeAssets="Compile" GeneratePathProperty="true" />
